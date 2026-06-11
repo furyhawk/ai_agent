@@ -34,9 +34,12 @@ logger = logging.getLogger(__name__)
 
 def _build_model(model_name: str):
     """OpenAI-only deployment."""
+    provider_kwargs: dict[str, Any] = {"api_key": settings.OPENAI_API_KEY}
+    if settings.OPENAI_BASE_URL:
+        provider_kwargs["base_url"] = settings.OPENAI_BASE_URL
     return OpenAIResponsesModel(
         model_name or settings.AI_MODEL,
-        provider=OpenAIProvider(api_key=settings.OPENAI_API_KEY),
+        provider=OpenAIProvider(**provider_kwargs),
     )
 
 

@@ -143,6 +143,7 @@ class Settings(BaseSettings):
 
     # === AI Agent (pydantic_ai, openai) ===
     OPENAI_API_KEY: str = ""
+    OPENAI_BASE_URL: str = ""
     AI_MODEL: str = "gpt-5.5"
     AI_TEMPERATURE: float = 0.7
     AI_THINKING_ENABLED: bool = False
