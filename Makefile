@@ -3,6 +3,8 @@
 # === Container Runtime Detection ============================================
 # Auto-detect podman or docker. Override at invocation:
 #   make DOCKER=podman DOCKER_COMPOSE="podman compose" dev
+export BACKEND_URL ?= http://localhost:8033
+
 DOCKER := $(shell command -v podman 2>/dev/null || command -v docker 2>/dev/null || echo docker)
 ifneq ($(findstring podman,$(DOCKER)),)
   DOCKER_COMPOSE := podman compose
@@ -188,10 +190,10 @@ db-history:
 
 # === Server ===
 run:
-	uv run --directory backend ai_agent server run --reload
+	uv run --directory backend ai_agent server run --reload --host 0.0.0.0 --port 8033
 
 run-prod:
-	uv run --directory backend ai_agent server run --host 0.0.0.0 --port 8000
+	uv run --directory backend ai_agent server run --host 0.0.0.0 --port 8033
 
 routes:
 	uv run --directory backend ai_agent server routes
