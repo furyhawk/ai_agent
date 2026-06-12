@@ -19,7 +19,7 @@ from pydantic_ai.messages import (
     TextPart,
     UserPromptPart,
 )
-from pydantic_ai.models.openai import OpenAIResponsesModel
+from pydantic_ai.models.openai import OpenAIModel
 from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_ai.settings import ModelSettings
 
@@ -37,7 +37,7 @@ def _build_model(model_name: str):
     provider_kwargs: dict[str, Any] = {"api_key": settings.OPENAI_API_KEY}
     if settings.OPENAI_BASE_URL:
         provider_kwargs["base_url"] = settings.OPENAI_BASE_URL
-    return OpenAIResponsesModel(
+    return OpenAIModel(
         model_name or settings.AI_MODEL,
         provider=OpenAIProvider(**provider_kwargs),
     )
