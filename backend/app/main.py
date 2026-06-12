@@ -7,6 +7,8 @@ from typing import TypedDict
 
 logger = logging.getLogger(__name__)
 
+from typing import TYPE_CHECKING
+
 from fastapi import FastAPI
 from fastapi_pagination import add_pagination
 
@@ -14,6 +16,9 @@ from app.api.exception_handlers import register_exception_handlers
 from app.api.router import api_router
 from app.clients.redis import RedisClient
 from app.core.config import settings
+
+if TYPE_CHECKING:
+    from app.services.rag.reranker import RerankService
 from app.core.logfire_setup import instrument_app, setup_logfire
 from app.core.logging import setup_logging
 from app.core.middleware import RequestIDMiddleware
@@ -27,6 +32,7 @@ class LifespanState(TypedDict, total=False):
     redis: RedisClient
     embedding_service: EmbeddingService
     vector_store: BaseVectorStore
+    rerank_service: "RerankService"
 
 
 @asynccontextmanager

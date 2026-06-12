@@ -48,14 +48,19 @@ class OpenAIEmbeddingProvider(BaseEmbeddingProvider):
     Uses OpenAI's embedding models to generate text embeddings.
     """
 
-    def __init__(self, model: str) -> None:
+    def __init__(self, model: str, base_url: str | None = None) -> None:
         """Initialize the OpenAI embedding provider.
 
         Args:
             model: The OpenAI embedding model name (e.g., 'text-embedding-3-small').
+            base_url: Explicit base URL for the OpenAI API. If not provided,
+                defaults to the standard OpenAI API, explicitly ignoring any
+                OPENAI_BASE_URL env var (which may point to a chat-only local
+                server that doesn't support embeddings).
         """
         self.model = model
-        self.client = OpenAI()
+        # Explicitly pass base_url to avoid picking up OPENAI_BASE_URL from env
+        self.client = OpenAI(base_url=base_url or "https://api.openai.com/v1")
 
     def embed_queries(self, texts: list[str]) -> list[list[float]]:
         """Embed a list of query texts using OpenAI.
